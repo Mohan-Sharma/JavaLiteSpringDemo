@@ -19,16 +19,21 @@ public class StudentFacadeImpl implements StudentFacade
 	@Resource
 	private StudentService studentService;
 
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.msharma.domain.facade.StudentFacade#findStudentByRollNumber(int)
+	 */
 	@Override
 	public StudentDTO findStudentByRollNumber(int rollNumber)
 	{
-		return null;
+		return studentService.findStudentByRollNumber(rollNumber);
 	}
 
 	@Override
 	public List<StudentDTO> findStudentByFirstName(String firstName)
 	{
-		return null;
+		return studentService.findStudentByFirstName(firstName);
 	}
 
 	/*
@@ -50,7 +55,7 @@ public class StudentFacadeImpl implements StudentFacade
 	@Override
 	public void save(StudentDTO student)
 	{
-
+		studentService.save(student);
 	}
 
 	/*
@@ -61,7 +66,7 @@ public class StudentFacadeImpl implements StudentFacade
 	@Override
 	public void saveAll(Collection<StudentDTO> students)
 	{
-
+		studentService.saveAll(students);
 	}
 
 	/*
@@ -72,7 +77,7 @@ public class StudentFacadeImpl implements StudentFacade
 	@Override
 	public Long count()
 	{
-		return null;
+		return studentService.count();
 	}
 
 	/*
@@ -83,6 +88,6 @@ public class StudentFacadeImpl implements StudentFacade
 	@Override
 	public Long countByFirstName(String firstName)
 	{
-		return null;
+		return studentService.countByFirstName(firstName);
 	}
 }
