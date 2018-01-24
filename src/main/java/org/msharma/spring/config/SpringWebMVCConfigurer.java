@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.mchange.v2.c3p0.DriverManagerDataSource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 /**
@@ -30,6 +33,16 @@ import java.util.List;
 @PropertySource({"classpath:database.properties"})
 public class SpringWebMVCConfigurer extends WebMvcConfigurerAdapter
 {
+
+	@Value("${development.driver}")
+	private String driver;
+	@Value("${development.username}")
+	private String username;
+	@Value("${development.password}")
+	private String password;
+	@Value("${development.url}")
+	private String url;
+
 	@Bean
 	public InternalResourceViewResolver resolver() {
 		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
@@ -76,5 +89,15 @@ public class SpringWebMVCConfigurer extends WebMvcConfigurerAdapter
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
+	}
+
+	@Bean
+	public DataSource dataSource() {
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		dataSource.setDriverClass(driver);
+		dataSource.setJdbcUrl(url);
+		dataSource.setUser(username);
+		dataSource.setPassword(password);
+		return dataSource;
 	}
 }

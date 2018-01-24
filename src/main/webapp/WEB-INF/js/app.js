@@ -5,20 +5,21 @@
     app.factory("studentFactory", function($http){
         return {
             allStudents: function(){
-                $http
-                    .get("/beginningjavalite/student/allstudents")
-                    .success(function(response, status, headers, config) {
-                    })
-                    .error(function(response, status, headers, config){});
-            }
+                return $http.get("/javalitespring/student/allstudents");
+            },
+             studentByRollNumber: function(rollNumber){
+                            return $http.get("/javalitespring/student/findbyrollnumber?rollNumber=" + rollNumber);
+             }
         }
     });
 
     app.controller('javaLiteController', ['$scope', 'studentFactory', function($scope, studentFactory) {
         $scope.students = [];
-        studentFactory.allStudents().then(function(response) {
-            $scope.students = response;
-        })
+        studentFactory
+            .allStudents()
+            .then(function(response){
+                    $scope.students = response.data;
+                 }, function(error){});
         $scope.name = "Voldemort";
     }])
 })(angular);

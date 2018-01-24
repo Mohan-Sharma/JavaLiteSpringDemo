@@ -6,6 +6,7 @@ import org.msharma.presentation.dto.StudentDTO;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -42,7 +43,7 @@ public class StudentFacadeImpl implements StudentFacade
 	 * @see org.msharma.domain.facade.StudentFacade#findAllStudents()
 	 */
 	@Override
-	public List<StudentDTO> findAllStudents()
+	public List<StudentDTO> findAllStudents() throws SQLException, ClassNotFoundException
 	{
 		return studentService.findAllStudents();
 	}

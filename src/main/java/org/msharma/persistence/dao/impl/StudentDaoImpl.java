@@ -1,5 +1,7 @@
 package org.msharma.persistence.dao.impl;
 
+import com.mchange.v2.c3p0.DataSources;
+import lombok.Synchronized;
 import org.apache.commons.collections4.CollectionUtils;
 import org.javalite.activejdbc.Base;
 import org.javalite.activejdbc.DB;
@@ -11,6 +13,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,6 +34,8 @@ public class StudentDaoImpl implements StudentDao
 	@Value("${development.url}")
 	private String url;
 
+	@Resource
+	private DataSource dataSource;
 
 	/*
 	 * (non-Javadoc)
@@ -39,9 +45,9 @@ public class StudentDaoImpl implements StudentDao
 	@Override
 	public Student findStudentByRollNumber(int rollNumber)
 	{
-		openConnection();
+		Base.open(dataSource);
 		Student student = Student.findFirst("roll_number = ?", rollNumber);
-		closeConnection();
+		Base.close();
 		return student;
 	}
 
@@ -53,9 +59,8 @@ public class StudentDaoImpl implements StudentDao
 	@Override
 	public List<Student> findStudentByFirstName(String firstName)
 	{
-		openConnection();
+		Base.open(dataSource);
 		List<Student> students = Student.where("first_name = ?", firstName);
-		closeConnection();
 		return students;
 	}
 
@@ -65,11 +70,11 @@ public class StudentDaoImpl implements StudentDao
 	 * @see org.msharma.persistence.dao.StudentDao#findAllStudents()
 	 */
 	@Override
-	public List<Student> findAllStudents()
+	public List<Student> findAllStudents() throws SQLException, ClassNotFoundException
 	{
-		openConnection();
+		Base.open(dataSource);
 		List<Student> students = Student.findAll();
-		closeConnection();
+		Base.close();
 		return students;
 	}
 
@@ -81,9 +86,9 @@ public class StudentDaoImpl implements StudentDao
 	@Override
 	public void save(Student student)
 	{
-		openConnection();
+		Base.open(dataSource);
 		student.saveIt();
-		closeConnection();
+		Base.close();
 	}
 
 	/*
@@ -94,10 +99,10 @@ public class StudentDaoImpl implements StudentDao
 	@Override
 	public void saveAll(Collection<Student> students)
 	{
-		openConnection();
+		Base.open(dataSource);
 		if(CollectionUtils.isNotEmpty(students))
 			students.forEach(student -> student.saveIt());
-		closeConnection();
+		Base.close();
 	}
 
 	/*
@@ -108,9 +113,9 @@ public class StudentDaoImpl implements StudentDao
 	@Override
 	public Long count()
 	{
-		openConnection();
+		Base.open(dataSource);
 		Long count = Student.count();
-		closeConnection();
+		Base.close();
 		return count;
 	}
 
@@ -122,25 +127,10 @@ public class StudentDaoImpl implements StudentDao
 	@Override
 	public Long countByFirstName(String firstName)
 	{
-		openConnection();
+		Base.open(dataSource);
 		Long count = Student.count("first_name = ?", firstName);
-		closeConnection();
+		Base.close();
 		return count;
 	}
 
-	/**
-	 * This functions is used to close JavaLite ActiveJDBC connection
-	 */
-	private void closeConnection()
-	{
-		Base.close();
-	}
-
-	/**
-	 * This functions is used to open JavaLite ActiveJDBC connection
-	 */
-	private void openConnection()
-	{
-		Base.open(driver, url, username, password);
-	}
 }

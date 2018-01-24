@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -69,7 +70,7 @@ public class StudentServiceImpl implements StudentService
 	 * @see org.msharma.domain.services.StudentService#findAllStudents()
 	 */
 	@Override
-	public List<StudentDTO> findAllStudents()
+	public List<StudentDTO> findAllStudents() throws SQLException, ClassNotFoundException
 	{
 		List<StudentDTO> studentData = Lists.newArrayList();
 		List<Student> students = studentDao.findAllStudents();

@@ -2,6 +2,7 @@ package org.msharma.domain.facade;
 
 import org.msharma.presentation.dto.StudentDTO;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public interface StudentFacade
 	 * This function is used to find all the students.
 	 * @return list of students
 	 */
-	List<StudentDTO> findAllStudents();
+	List<StudentDTO> findAllStudents() throws SQLException, ClassNotFoundException;
 
 	/**
 	 * This function is used to save the Student.

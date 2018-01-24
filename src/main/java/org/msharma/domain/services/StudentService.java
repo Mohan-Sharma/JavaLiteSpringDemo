@@ -3,6 +3,7 @@ package org.msharma.domain.services;
 import org.msharma.domain.model.Student;
 import org.msharma.presentation.dto.StudentDTO;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public interface StudentService
 	 * This function fetches all the students.
 	 * @return
 	 */
-	List<StudentDTO> findAllStudents();
+	List<StudentDTO> findAllStudents() throws SQLException, ClassNotFoundException;
 
 	/**
 	 * This function saves the Student model in db.

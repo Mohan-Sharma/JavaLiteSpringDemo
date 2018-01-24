@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -44,7 +45,7 @@ public class StudentRestController
 	 * @return list of students
 	 */
 	@RequestMapping(value = "/allstudents", method = RequestMethod.GET)
-	public @ResponseBody List<StudentDTO> getAllStudent()
+	public @ResponseBody List<StudentDTO> getAllStudent() throws SQLException, ClassNotFoundException
 	{
 		return studentFacade.findAllStudents();
 	}
