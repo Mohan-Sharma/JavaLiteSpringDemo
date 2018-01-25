@@ -45,9 +45,7 @@ public class StudentDaoImpl implements StudentDao
 	@Override
 	public Student findStudentByRollNumber(int rollNumber)
 	{
-		Base.open(dataSource);
 		Student student = Student.findFirst("roll_number = ?", rollNumber);
-		Base.close();
 		return student;
 	}
 
@@ -59,7 +57,6 @@ public class StudentDaoImpl implements StudentDao
 	@Override
 	public List<Student> findStudentByFirstName(String firstName)
 	{
-		Base.open(dataSource);
 		List<Student> students = Student.where("first_name = ?", firstName);
 		return students;
 	}
@@ -72,9 +69,7 @@ public class StudentDaoImpl implements StudentDao
 	@Override
 	public List<Student> findAllStudents() throws SQLException, ClassNotFoundException
 	{
-		Base.open(dataSource);
 		List<Student> students = Student.findAll();
-		Base.close();
 		return students;
 	}
 
@@ -86,9 +81,7 @@ public class StudentDaoImpl implements StudentDao
 	@Override
 	public void save(Student student)
 	{
-		Base.open(dataSource);
 		student.saveIt();
-		Base.close();
 	}
 
 	/*
@@ -99,10 +92,8 @@ public class StudentDaoImpl implements StudentDao
 	@Override
 	public void saveAll(Collection<Student> students)
 	{
-		Base.open(dataSource);
 		if(CollectionUtils.isNotEmpty(students))
 			students.forEach(student -> student.saveIt());
-		Base.close();
 	}
 
 	/*
@@ -113,9 +104,7 @@ public class StudentDaoImpl implements StudentDao
 	@Override
 	public Long count()
 	{
-		Base.open(dataSource);
 		Long count = Student.count();
-		Base.close();
 		return count;
 	}
 
@@ -127,9 +116,7 @@ public class StudentDaoImpl implements StudentDao
 	@Override
 	public Long countByFirstName(String firstName)
 	{
-		Base.open(dataSource);
 		Long count = Student.count("first_name = ?", firstName);
-		Base.close();
 		return count;
 	}
 

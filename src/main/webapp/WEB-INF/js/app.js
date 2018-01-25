@@ -2,24 +2,45 @@
     "use strict";
     var app= angular.module('javaLiteApp', []);
 
-    app.factory("studentFactory", function($http){
+    app.service("studentService", function($http, $q){
         return {
-            allStudents: function(){
-                return $http.get("/javalitespring/student/allstudents");
+            getAllStudents: function(){
+                var deferred = $q.defer();
+                $http.get("/javalitespring/student/allstudents")
+                            .then(function(response){deferred.resolve(response.data);}, function(error) {deferred.reject(error);});
+                return deferred.promise;
             },
              studentByRollNumber: function(rollNumber){
-                            return $http.get("/javalitespring/student/findbyrollnumber?rollNumber=" + rollNumber);
+                 var deferred = $q.defer();
+                 $http.get("/javalitespring/student/findbyrollnumber?rollNumber=" + rollNumber)
+                            .then(function(response){deferred.resolve(response.data);}, function(error) {deferred.reject(error);});
+                 return deferred.promise;
              }
         }
     });
 
-    app.controller('javaLiteController', ['$scope', 'studentFactory', function($scope, studentFactory) {
+    app.controller('javaLiteController', ['$scope', 'studentService', function($scope, studentService) {
         $scope.students = [];
-        studentFactory
-            .allStudents()
-            .then(function(response){
-                    $scope.students = response.data;
-                 }, function(error){});
         $scope.name = "Voldemort";
+        studentService
+            .getAllStudents()
+            .then(function(data){ $scope.students = data });
+
+        $scope.studentByRollNumber = {rollNumber : "", firstName: "", lastName:""};
+        $scope.showClearButton = false;
+        $scope.fetchStudentByRollNumber = function(form){
+            var rollNumber = $scope.studentByRollNumber.roll_number;
+            studentService
+                        .studentByRollNumber(rollNumber)
+                        .then(function(data){ $scope.studentByRollNumber = data; $scope.showClearButton = true;});
+        };
+
+        $scope.clearForm = function(form) {
+            form.$setPristine();
+            form.$setUntouched();
+            $scope.studentByRollNumber = {rollNumber : "", firstName: "", lastName:""};
+            $scope.showClearButton = false;
+        }
     }])
+
 })(angular);
