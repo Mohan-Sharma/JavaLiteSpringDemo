@@ -1,5 +1,5 @@
 # JavaLiteSpringDemo
-This repository demonstrates how we can use JavaLite ActiveJDBC along with Spring.
+This repository demonstrates how we can use JavaLite ActiveJDBC along with Spring. Used AngularJS for client data binding.
 
 Steps to run the application.
 1. Clone the demo and import to IDE
